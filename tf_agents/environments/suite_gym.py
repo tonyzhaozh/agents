@@ -35,7 +35,8 @@ def load(environment_name,
          max_episode_steps=None,
          gym_env_wrappers=(),
          env_wrappers=(),
-         spec_dtype_map=None):
+         spec_dtype_map=None,
+	 gym_kwargs=None):
   """Loads the selected environment and wraps it with the specified wrappers.
 
   Note that by default a TimeLimit wrapper is used to limit episode lengths
@@ -60,8 +61,9 @@ def load(environment_name,
   Returns:
     A PyEnvironment instance.
   """
+  gym_kwargs = gym_kwargs if gym_kwargs else {}
   gym_spec = gym.spec(environment_name)
-  gym_env = gym_spec.make()
+  gym_env = gym_spec.make(**gym_kwargs)
 
   if max_episode_steps is None and gym_spec.max_episode_steps is not None:
     max_episode_steps = gym_spec.max_episode_steps
